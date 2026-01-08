@@ -1,17 +1,10 @@
-/* 1. 알리바바 산스 한글(Alibaba PuHuiTi) 불러오기 */
-@import url('https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/static/SUIT.css'); /* 대체용 고퀄리티 폰트 혹은 아래 CDN 사용 */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
-
-/* 알리바바 폰트 공식 CDN이 불안정할 경우를 대비해 가장 유사하고 깔끔한 빈티지/모던 폰트로 세팅해 드립니다. 
-   직접 파일을 올리실 게 아니라면 아래 설정이 가장 안전합니다. */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 body {
   margin: 0;
   background: #eee;
-  /* 알리바바 산스가 설치되어 있다면 우선 적용, 없으면 깔끔한 산스계열 적용 */
-  font-family: 'Alibaba PuHuiTi', 'Alibaba Sans', sans-serif; 
+  font-family: 'Pretendard', sans-serif;
   color: #000;
-  -webkit-font-smoothing: antialiased;
 }
 
 /* ───────── 상단 네비 ───────── */
@@ -33,7 +26,28 @@ body {
   letter-spacing: 0.04em;
 }
 
-/* ───────── 리스트 페이지 ───────── */
+/* ───────── 메인 정중앙 ───────── */
+.main-center {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;    
+  justify-content: center;
+}
+
+/* 유튜브 크기 고정 */
+.video-wrap {
+  width: 720px;
+  aspect-ratio: 16 / 9;
+}
+
+.video-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* 리스트 페이지 */
 .list-page {
   margin-top: 140px;
   max-width: 720px;
@@ -42,44 +56,45 @@ body {
 
 .page-title {
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   margin-bottom: 32px;
-  letter-spacing: 0.05em;
 }
 
 /* ───────── 쓰레드(리스트 항목) ───────── */
 .thread {
-  padding: 28px 20px;
+  padding: 28px 20px; /* 좌우 여백을 살짝 줌 */
   border-bottom: 1px solid #ccc;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease; /* 배경 변환 부드럽게 */
 }
 
-/* 위에서 아래로 흐르는 형광 연노랑 그라데이션 (#faff00) */
+/* [수정] 마우스를 갖다대면 구역 전체에 쨍한 노란색 그라데이션 */
 .thread:hover {
   background: linear-gradient(
     180deg, 
     #faff00 0%, 
-    rgba(250, 255, 0, 0) 100%
+    rgba(250, 255, 0, 0.6) 100%
   );
 }
 
 .thread-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  /* 제목의 밑줄 효과는 완전히 제거 */
+  background: none; 
 }
 
 .thread-preview {
   margin-top: 10px;
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.9;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  color: #555;
+  color: #333;
 }
 
 /* ───────── 팝업 ───────── */
@@ -103,15 +118,16 @@ body {
 }
 
 .popup h2 {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   margin-bottom: 12px;
+  letter-spacing: -0.02em;
 }
 
 .popup-body {
-  font-size: 16px;
-  line-height: 1.9;
-  color: #333;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #444;
   margin-bottom: 30px;
 }
 
@@ -121,13 +137,39 @@ body {
   right: 16px;
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
 }
 
-/* 문서 컨테이너 (배경색 통일) */
+/* 문서(iframe)를 감싸는 컨테이너 - 배경색 제거 */
 .embed-container {
   margin-top: 20px;
-  border: 1px solid #ccc;
-  background: transparent; 
+  border-radius: 0; /* 테두리 둥글기 제거 시 더 자연스러움 */
+  overflow: hidden;
+  border: none;    /* 테두리 제거 */
+  background: transparent; /* 배경 투명하게 */
+}
+
+/* ABOUT 페이지 전용 레이아웃 */
+.page-body {
+  min-height: 100vh;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform: translateY(-60px);
+  padding: 0 20px;
+}
+
+.page-body h1 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.page-body p {
+  font-size: 14px;
+  margin: 5px 0;
+  line-height: 1.6;
 }
