@@ -134,19 +134,31 @@ body {
   cursor: pointer;
 }
 
+/* ABOUT 페이지 전용 레이아웃 */
 .page-body {
+  min-height: 100vh;
   max-width: 720px;
-  margin: 160px auto;
-  padding: 0 20px;
+
+  /* 중앙 정렬 */
+  margin: 0 auto;
+  padding: 120px 20px 80px; /* 상단 네비 여백 */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* 제목 */
 .page-body h1 {
-  font-size: 16px;
+  font-size: 20px;          /* 🔽 줄임 */
+  font-weight: 700;
   margin-bottom: 32px;
 }
 
+/* 본문 */
 .page-body p {
-  font-size: 14px;
+  font-size: 14px;          /* 🔽 줄임 */
   line-height: 2;
   margin-bottom: 20px;
+  max-width: 640px;
 }
