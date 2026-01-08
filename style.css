@@ -72,8 +72,8 @@ body {
 .thread:hover {
   background: linear-gradient(
     180deg, 
-    #ffea00 0%, 
-    rgba(255, 234, 0, 0) 100%
+    #faff00 0%, 
+    rgba(250, 255, 0, 0.6) 100%
   );
 }
 
