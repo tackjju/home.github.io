@@ -58,27 +58,25 @@ async function loadPosts(category) {
                 `;
 
                 div.onclick = () => {
-                    let docEmbedHtml = "";
-                    let btnsHtml = "";
-                    
-                    // 1. 구글 문서 임베드 처리 (E열 링크)
-                    if (docUrl.includes("docs.google.com/document")) {
-                        // 일반 주소를 웹 게시용 주소로 변환
-                        let embedUrl = docUrl.split('/edit')[0] + "/pub?embedded=true";
-                        docEmbedHtml = `
-                            <div style="margin-top:20px; border:1px solid #ddd; border-radius:8px; overflow:hidden;">
-                                <iframe src="${embedUrl}" style="width:100%; height:500px; border:none;"></iframe>
-                            </div>`;
-                    } else if (docUrl.startsWith("http")) {
-                        // 구글 문서가 아닌 일반 링크일 경우 버튼으로 표시
-                        btnsHtml += `<a href="${docUrl}" target="_blank" class="nav-btn" style="display:block; margin-top:10px; background:#f0f0f0; text-align:center; padding:12px; text-decoration:none; color:black; border-radius:5px;">📄 관련 문서 열기</a>`;
-                    }
-                    
-                    // 2. 유튜브 버튼 처리 (F열 링크)
-                    if (mediaUrl && (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be"))) {
-                        btnsHtml += `<a href="${mediaUrl}" target="_blank" class="nav-btn" style="display:block; margin-top:10px; background:#FF0000; color:white; text-align:center; padding:12px; text-decoration:none; font-weight:bold; border-radius:5px;">▶ 유튜브 영상 보기</a>`;
-                    }
+    let docEmbedHtml = "";
+    let btnsHtml = "";
+    
+    // E열(docUrl)에 구글 문서 주소가 있을 경우
+    if (docUrl.includes("docs.google.com/document")) {
+        // 이미 /pub이 포함된 링크라면 그대로 사용하고, 아니면 /pub을 붙여줍니다.
+        let embedUrl = docUrl;
+        if (!embedUrl.includes("/pub")) {
+            embedUrl = embedUrl.split('/edit')[0] + "/pub";
+        }
+        
+        // iframe용 파라미터(embedded=true)를 추가합니다.
+        embedUrl += (embedUrl.includes("?") ? "&" : "?") + "embedded=true";
 
+        docEmbedHtml = `
+            <div style="margin-top:20px; border:1px solid #ddd; border-radius:8px; overflow:hidden; background: #fff;">
+                <iframe src="${embedUrl}" style="width:100%; height:600px; border:none;"></iframe>
+            </div>`;
+    }
                     // 팝업 화면 그리기
                     popupContent.innerHTML = `
                         <h2>${title}</h2>
