@@ -29,6 +29,8 @@ async function loadPosts(category) {
     const popup = document.getElementById("popup");
     const popupContent = document.getElementById("popupContent");
 
+    if (!listEl) return; // 요소가 없으면 실행 안 함
+
     try {
         const res = await fetch(`${SHEET_URL}&t=${Date.now()}`);
         const text = await res.text();
@@ -59,22 +61,20 @@ async function loadPosts(category) {
                 div.onclick = () => {
                     let docEmbedHtml = "";
                     let youtubeEmbedHtml = "";
-                    let btnsHtml = "";
                     
-                    // 1. 구글 문서 임베드 (E열)
-                    // 1. 구글 문서 임베드 로직 (E열)
-if (docUrl && docUrl.includes("docs.google.com/document")) {
-    let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
- 
-docEmbedHtml = `
-    <div class="embed-container" style="background: #eee;"> <iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe>
-    </div>`;
-        <p style="text-align:center; margin-top:10px;">
-            <a href="${docUrl}" target="_blank" style="font-size:12px; color:#888; text-decoration:none;">↗ 새 창에서 문서 전체 보기</a>
-        </p>`;
-}
+                    // 1. 구글 문서 임베드 로직
+                    if (docUrl && docUrl.includes("docs.google.com/document")) {
+                        let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
+                        docEmbedHtml = `
+                            <div class="embed-container" style="background: #eee; margin-top:20px;">
+                                <iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe>
+                            </div>
+                            <p style="text-align:center; margin-top:10px;">
+                                <a href="${docUrl}" target="_blank" style="font-size:12px; color:#888; text-decoration:none;">↗ 새 창에서 문서 전체 보기</a>
+                            </p>`;
+                    }
 
-                    // 2. 유튜브 임베드 (F열)
+                    // 2. 유튜브 임베드 로직
                     if (mediaUrl && (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be"))) {
                         let videoId = "";
                         if (mediaUrl.includes("v=")) {
@@ -94,7 +94,7 @@ docEmbedHtml = `
                     popupContent.innerHTML = `
                         <h2>${title}</h2>
                         <p style="color:#999; font-size:13px;">${date}</p>
-                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; font-size:14px;">${content}</div>
+                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; font-size:14px; line-height:1.8;">${content}</div>
                         ${youtubeEmbedHtml}
                         ${docEmbedHtml}
                     `;
@@ -103,7 +103,7 @@ docEmbedHtml = `
                 listEl.appendChild(div);
             }
         }
-    } catch (err) { console.error(err); }
+    } catch (err) { console.error("데이터 로드 에러:", err); }
 }
 
 document.addEventListener("click", (e) => {
