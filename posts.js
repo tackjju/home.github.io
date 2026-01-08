@@ -9,12 +9,8 @@ function parseCSV(text) {
 
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
-    const next = text[i + 1];
 
-    if (char === '"' && next === '"') {
-      current += '"';
-      i++;
-    } else if (char === '"') {
+    if (char === '"') {
       inQuotes = !inQuotes;
     } else if (char === "," && !inQuotes) {
       row.push(current);
@@ -28,6 +24,7 @@ function parseCSV(text) {
       current += char;
     }
   }
+
   row.push(current);
   rows.push(row);
   return rows;
@@ -39,8 +36,6 @@ function loadPosts(category) {
   const popupContent = document.getElementById("popupContent");
   const popupClose = document.getElementById("popupClose");
 
-  if (!listEl) return;
-
   fetch(SHEET_URL)
     .then(res => res.text())
     .then(text => {
@@ -48,12 +43,10 @@ function loadPosts(category) {
       listEl.innerHTML = "";
 
       rows.forEach(cols => {
-        if (cols.length < 4) return;
-
         const title = cols[0]?.trim();
         const date = cols[1]?.trim();
-        const categoryValue = cols[cols.length - 1]?.trim();
-        const content = cols.slice(2, cols.length - 1).join(",").trim();
+        const content = cols[2]?.trim();
+        const categoryValue = cols[3]?.trim(); // 🔴 핵심 수정
 
         if (!title || !content) return;
         if (categoryValue !== category) return;
@@ -83,9 +76,7 @@ function loadPosts(category) {
       });
     });
 
-  if (popupClose) {
-    popupClose.onclick = () => {
-      popup.classList.add("hidden");
-    };
-  }
+  popupClose.onclick = () => {
+    popup.classList.add("hidden");
+  };
 }
