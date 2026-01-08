@@ -134,3 +134,19 @@ body {
   cursor: pointer;
 }
 
+.page-body {
+  max-width: 720px;
+  margin: 160px auto;
+  padding: 0 20px;
+}
+
+.page-body h1 {
+  font-size: 16px;
+  margin-bottom: 32px;
+}
+
+.page-body p {
+  font-size: 14px;
+  line-height: 2;
+  margin-bottom: 20px;
+}
