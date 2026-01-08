@@ -65,8 +65,7 @@ async function loadPosts(category) {
                     // 1. 구글 문서 임베드 로직 (E열)
 if (docUrl && docUrl.includes("docs.google.com/document")) {
     let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
-    docEmbedHtml = `
-        // posts.js 내의 docEmbedHtml 생성 부분
+ 
 docEmbedHtml = `
     <div class="embed-container" style="background: #eee;"> <iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe>
     </div>`;
