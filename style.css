@@ -158,7 +158,7 @@ body {
 /* 본문 */
 .page-body p {
   font-size: 14px;          /* 🔽 줄임 */
-  line-height: 2;
-  margin-bottom: 20px;
-  max-width: 640px;
+   margin: 12px 0;   /* 기본은 1em이라 큼 */
+  line-height: 1.6;
 }
+
