@@ -62,29 +62,28 @@ body {
 
 /* ───────── 쓰레드(리스트 항목) ───────── */
 .thread {
-  padding: 28px 0;
+  padding: 28px 20px; /* 좌우 여백을 살짝 줌 */
   border-bottom: 1px solid #ccc;
   cursor: pointer;
-  transition: all 0.2s ease; /* 부드러운 전환 효과 */
+  transition: background 0.2s ease; /* 배경 변환 부드럽게 */
+}
+
+/* [수정] 마우스를 갖다대면 구역 전체에 쨍한 노란색 그라데이션 */
+.thread:hover {
+  background: linear-gradient(
+    180deg, 
+    #ffea00 0%, 
+    rgba(255, 234, 0, 0) 100%
+  );
 }
 
 .thread-title {
   font-size: 14px;
   font-weight: 700;
-  /* 기본 상태에서는 그라데이션(밑줄 효과) 제거 */
+  display: block;
+  margin-bottom: 4px;
+  /* 제목의 밑줄 효과는 완전히 제거 */
   background: none; 
-  display: inline-block;
-}
-
-/* 마우스를 갖다대었을 때(Hover) 효과 */
-.thread:hover .thread-title {
-  /* 쨍한 노란색 그라데이션 추가 */
-  background: linear-gradient(
-    to bottom,
-    transparent 50%,
-    #ffea00 50%
-  );
-  color: #000;
 }
 
 .thread-preview {
@@ -95,6 +94,7 @@ body {
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  color: #333;
 }
 
 /* ───────── 팝업 ───────── */
