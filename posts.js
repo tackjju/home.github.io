@@ -62,13 +62,17 @@ async function loadPosts(category) {
                     let btnsHtml = "";
                     
                     // 1. 구글 문서 임베드 (E열)
-                    if (docUrl && docUrl.includes("docs.google.com/document")) {
-                        let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
-                        docEmbedHtml = `
-                            <div style="margin-top:20px; border:1px solid #ddd; border-radius:8px; overflow:hidden; background: #fff;">
-                                <iframe src="${embedUrl}" style="width:100%; height:500px; border:none;"></iframe>
-                            </div>`;
-                    }
+                    // 1. 구글 문서 임베드 로직 (E열)
+if (docUrl && docUrl.includes("docs.google.com/document")) {
+    let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
+    docEmbedHtml = `
+        <div class="embed-container">
+            <iframe src="${embedUrl}" style="width:100%; height:700px; border:none; display:block;"></iframe>
+        </div>
+        <p style="text-align:center; margin-top:10px;">
+            <a href="${docUrl}" target="_blank" style="font-size:12px; color:#888; text-decoration:none;">↗ 새 창에서 문서 전체 보기</a>
+        </p>`;
+}
 
                     // 2. 유튜브 임베드 (F열)
                     if (mediaUrl && (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be"))) {
