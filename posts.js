@@ -1,5 +1,6 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLeQeFdWLt6yUX0daihRFirATwDLOS01O8G7U2NMlHVPdfAXEpD1Btp4VzmhxccXghSXawTgo9PUPS/pub?gid=0&single=true&output=csv";
 
+// CSV의 따옴표와 복잡한 링크를 완벽하게 보존하는 파서
 function parseCSV(text) {
     const result = [];
     let row = [];
@@ -29,8 +30,6 @@ async function loadPosts(category) {
     const popup = document.getElementById("popup");
     const popupContent = document.getElementById("popupContent");
 
-    if (!listEl) return; // 요소가 없으면 실행 안 함
-
     try {
         const res = await fetch(`${SHEET_URL}&t=${Date.now()}`);
         const text = await res.text();
@@ -40,12 +39,14 @@ async function loadPosts(category) {
 
         for (let i = 1; i < rows.length; i++) {
             const row = rows[i];
+            
+            // 시트의 칸 순서: [0]제목, [1]날짜, [2]카테고리, [3]내용, [4]문서링크(E), [5]영상링크(F)
             const title = row[0] || "";
             const date = row[1] || "";
             const cat = row[2] ? row[2].trim().toLowerCase() : "";
             const content = row[3] || "";
             const docUrl = row[4] ? row[4].trim() : "";
-            const mediaUrl = row[5] ? row[5].trim() : "";
+            const mediaUrl = row[5] ? row[5].trim() : ""; // 여기가 사용자님이 말씀하신 F열!
 
             if (cat === category.toLowerCase()) {
                 const div = document.createElement("div");
@@ -59,51 +60,30 @@ async function loadPosts(category) {
                 `;
 
                 div.onclick = () => {
-                    let docEmbedHtml = "";
-                    let youtubeEmbedHtml = "";
+                    let btnsHtml = "";
                     
-                    // 1. 구글 문서 임베드 로직
-                    if (docUrl && docUrl.includes("docs.google.com/document")) {
-                        let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
-                        docEmbedHtml = `
-                            <div class="embed-container" style="background: #eee; margin-top:20px;">
-                                <iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe>
-                            </div>
-                            <p style="text-align:center; margin-top:10px;">
-                                <a href="${docUrl}" target="_blank" style="font-size:12px; color:#888; text-decoration:none;">↗ 새 창에서 문서 전체 보기</a>
-                            </p>`;
+                    // 문서 버튼 (E열)
+                    if (docUrl.startsWith("http")) {
+                        btnsHtml += `<a href="${docUrl}" target="_blank" class="nav-btn" style="display:block; margin-top:10px; background:#f0f0f0; text-align:center; padding:12px; text-decoration:none; color:black; border-radius:5px;">📄 문서 보기</a>`;
                     }
-
-                    // 2. 유튜브 임베드 로직
-                    if (mediaUrl && (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be"))) {
-                        let videoId = "";
-                        if (mediaUrl.includes("v=")) {
-                            videoId = mediaUrl.split("v=")[1].split("&")[0];
-                        } else if (mediaUrl.includes("youtu.be/")) {
-                            videoId = mediaUrl.split("youtu.be/")[1].split("?")[0];
-                        }
-                        
-                        if (videoId) {
-                            youtubeEmbedHtml = `
-                                <div style="margin-top:20px; aspect-ratio: 16/9; border-radius:8px; overflow:hidden;">
-                                    <iframe src="https://www.youtube.com/embed/${videoId}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
-                                </div>`;
-                        }
+                    
+                    // 유튜브 버튼 (F열) - 조건문을 더 널널하게 잡았습니다.
+                    if (mediaUrl && (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be") || mediaUrl.includes("http"))) {
+                        btnsHtml += `<a href="${mediaUrl}" target="_blank" class="nav-btn" style="display:block; margin-top:10px; background:#FF0000; color:white; text-align:center; padding:12px; text-decoration:none; font-weight:bold; border-radius:5px;">▶ 유튜브 영상 보기</a>`;
                     }
 
                     popupContent.innerHTML = `
                         <h2>${title}</h2>
                         <p style="color:#999; font-size:13px;">${date}</p>
-                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; font-size:14px; line-height:1.8;">${content}</div>
-                        ${youtubeEmbedHtml}
-                        ${docEmbedHtml}
+                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; line-height:1.6;">${content}</div>
+                        <div style="margin-top:25px; border-top:1px solid #eee; padding-top:15px;">${btnsHtml}</div>
                     `;
                     popup.classList.remove("hidden");
                 };
                 listEl.appendChild(div);
             }
         }
-    } catch (err) { console.error("데이터 로드 에러:", err); }
+    } catch (err) { console.error(err); }
 }
 
 document.addEventListener("click", (e) => {
