@@ -143,6 +143,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transform: translateY(-40px);
 
   padding: 0 20px;   /* 좌우만 */
 }
