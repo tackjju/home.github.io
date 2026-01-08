@@ -47,3 +47,90 @@ body {
   height: 100%;
   border: none;
 }
+
+
+/* 리스트 페이지 */
+.list-page {
+  margin-top: 140px;
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.page-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+/* 쓰레드 */
+.thread {
+  padding: 28px 0;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.thread-title {
+  font-size: 14px;
+  font-weight: 500;
+  background: linear-gradient(
+    to bottom,
+    transparent 60%,
+    rgba(255, 230, 120, 0.7) 60%
+  );
+}
+
+.thread-preview {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.9;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 팝업 */
+.popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40%;
+  min-width: 360px;
+  height: 100%;
+  background: #f2f2f2;
+  padding: 40px;
+  overflow-y: auto;
+  z-index: 300;
+}
+
+.popup.hidden {
+  display: none;
+}
+
+.popup h2 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.popup-date {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.popup-body {
+  font-size: 14px;
+  line-height: 2;
+}
+
+#popupClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
