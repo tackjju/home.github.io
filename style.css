@@ -22,7 +22,7 @@ body {
   font-size: 13px;
   font-weight: 700;
   color: #0055ff;
-  text-decoration: none; /* 밑줄 제거 */
+  text-decoration: none; 
   letter-spacing: 0.04em;
 }
 
@@ -30,10 +30,9 @@ body {
 .main-center {
   width: 100vw;
   height: 100vh;
-
   display: flex;
-  align-items: center;    /* 세로 중앙 */
-  justify-content: center;/* 가로 중앙 */
+  align-items: center;    
+  justify-content: center;
 }
 
 /* 유튜브 크기 고정 */
@@ -48,7 +47,6 @@ body {
   border: none;
 }
 
-
 /* 리스트 페이지 */
 .list-page {
   margin-top: 140px;
@@ -62,53 +60,63 @@ body {
   margin-bottom: 32px;
 }
 
-/* 쓰레드 */
+/* ───────── 쓰레드(리스트 항목) ───────── */
 .thread {
   padding: 28px 0;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
+  transition: all 0.2s ease; /* 부드러운 전환 효과 */
 }
 
 .thread-title {
   font-size: 14px;
   font-weight: 700;
+  /* 기본 상태에서는 그라데이션(밑줄 효과) 제거 */
+  background: none; 
+  display: inline-block;
+}
+
+/* 마우스를 갖다대었을 때(Hover) 효과 */
+.thread:hover .thread-title {
+  /* 쨍한 노란색 그라데이션 추가 */
   background: linear-gradient(
     to bottom,
-    transparent 60%,
-    rgba(255, 230, 120, 0.7) 60%
+    transparent 50%,
+    #ffea00 50%
   );
+  color: #000;
 }
 
 .thread-preview {
   margin-top: 10px;
   font-size: 14px;
   line-height: 1.9;
-
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-/* 팝업 */
-/* 팝업 창 전체 디자인 개선 */
+/* ───────── 팝업 ───────── */
 .popup {
   position: fixed;
   top: 0;
   right: 0;
-  width: 45%; /* 조금 더 넓게 설정하여 가독성 확보 */
+  width: 45%; 
   min-width: 400px;
   height: 100%;
-  background: #eee; /* 메인 배경색인 #eee와 맞춤 */
+  background: #eee; 
   padding: 60px 40px;
   overflow-y: auto;
   z-index: 300;
-  /* 부드러운 왼쪽 그림자 추가 */
   box-shadow: -10px 0 50px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
-/* 팝업 내 제목 가독성 */
+.popup.hidden {
+  display: none;
+}
+
 .popup h2 {
   font-size: 22px;
   font-weight: 800;
@@ -116,7 +124,6 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* 팝업 내 본문 텍스트 */
 .popup-body {
   font-size: 15px;
   line-height: 1.8;
@@ -124,43 +131,45 @@ body {
   margin-bottom: 30px;
 }
 
-/* 문서(iframe)를 감싸는 컨테이너 */
+#popupClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 .embed-container {
   margin-top: 20px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #ddd;
-  background: #ffffff; /* 문서는 흰색 종이 느낌을 유지하는 것이 가장 읽기 편함 */
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* 문서에 살짝 입체감 부여 */
+  background: #ffffff; 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
 }
-
 
 /* ABOUT 페이지 전용 레이아웃 */
 .page-body {
   min-height: 100vh;
   max-width: 720px;
   margin: 0 auto;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   transform: translateY(-60px);
-
-  padding: 0 20px;   /* 좌우만 */
+  padding: 0 20px;
 }
 
-
-/* 제목 */
 .page-body h1 {
-  font-size: 20px;          /* 🔽 줄임 */
+  font-size: 20px;
   font-weight: 700;
   margin-bottom: 32px;
 }
 
-/* 본문 */
 .page-body p {
-  font-size: 14px;          /* 🔽 줄임 */
-   margin: 5px 0;   /* 기본은 1em이라 큼 */
+  font-size: 14px;
+  margin: 5px 0;
   line-height: 1.6;
 }
-
