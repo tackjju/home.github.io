@@ -65,7 +65,7 @@ async function loadPosts(category) {
                     if (docUrl && docUrl.includes("docs.google.com/document")) {
                         let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
                         docEmbedHtml = `
-                            <div style="margin-top:20px; border:1px solid #ddd; border-radius:8px; overflow:hidden; background: #fff;">
+                            <div style="margin-top:30px; border:0px solid #ddd; border-radius:0px; overflow:hidden; background: #fff;">
                                 <iframe src="${embedUrl}" style="width:100%; height:500px; border:none;"></iframe>
                             </div>`;
                     }
