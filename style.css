@@ -141,13 +141,13 @@ body {
   cursor: pointer;
 }
 
+/* 문서(iframe)를 감싸는 컨테이너 - 배경색 제거 */
 .embed-container {
   margin-top: 20px;
-  border-radius: 12px;
+  border-radius: 0; /* 테두리 둥글기 제거 시 더 자연스러움 */
   overflow: hidden;
-  border: 1px solid #ddd;
-  background: #ffffff; 
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
+  border: none;    /* 테두리 제거 */
+  background: transparent; /* 배경 투명하게 */
 }
 
 /* ABOUT 페이지 전용 레이아웃 */
