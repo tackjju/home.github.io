@@ -59,26 +59,27 @@ async function loadPosts(category) {
                     <div class="thread-preview">${content.substring(0, 50)}...</div>
                 `;
 
-                div.onclick = () => {
-                    let btnsHtml = "";
-                    
-                    // 문서 버튼 (E열)
-                    if (docUrl.startsWith("http")) {
-                        btnsHtml += `<a href="${docUrl}" target="_blank" class="nav-btn" style="display:block; margin-top:10px; background:#f0f0f0; text-align:center; padding:12px; text-decoration:none; color:black; border-radius:5px;">📄 문서 보기</a>`;
-                    }
-                    
-                    // 유튜브 버튼 (F열) - 조건문을 더 널널하게 잡았습니다.
-                    if (mediaUrl && (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be") || mediaUrl.includes("http"))) {
-                        btnsHtml += `<a href="${mediaUrl}" target="_blank" class="nav-btn" style="display:block; margin-top:10px; background:#FF0000; color:white; text-align:center; padding:12px; text-decoration:none; font-weight:bold; border-radius:5px;">▶ 유튜브 영상 보기</a>`;
-                    }
+               div.onclick = () => {
+    let docEmbedHtml = "";
+    
+    // E열에 구글 문서 링크가 있다면 iframe으로 변환
+    if (docUrl.includes("docs.google.com/document")) {
+        // 구글 문서를 웹 게시용 보기 모드로 주소 변경
+        const embedUrl = docUrl.replace(/\/edit.*$/, "/pub?embedded=true");
+        docEmbedHtml = `<iframe src="${https://docs.google.com/document/d/e/2PACX-1vSQ6pGU2DBGSe7IYiTiraniaSXJ1rB6uOAuDEL7K7Q6iaPhurNvDNciV5_Mo9pySIyKAMUJPTnbatlu/pub?embedded=true}" style="width:100%; height:500px; border:1px solid #ddd; margin-top:20px;"></iframe>`;
+    }
 
-                    popupContent.innerHTML = `
-                        <h2>${title}</h2>
-                        <p style="color:#999; font-size:13px;">${date}</p>
-                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; line-height:1.6;">${content}</div>
-                        <div style="margin-top:25px; border-top:1px solid #eee; padding-top:15px;">${btnsHtml}</div>
-                    `;
-                    popup.classList.remove("hidden");
+    popupContent.innerHTML = `
+        <h2>${title}</h2>
+        <p style="color:#999; font-size:13px;">${date}</p>
+        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px;">${content}</div>
+        
+        ${docEmbedHtml}
+        
+        <div style="margin-top:25px; border-top:1px solid #eee; padding-top:15px;">
+            ${btnsHtml} </div>
+    `;
+    popup.classList.remove("hidden");
                 };
                 listEl.appendChild(div);
             }
