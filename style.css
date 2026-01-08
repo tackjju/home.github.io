@@ -91,49 +91,49 @@ body {
 }
 
 /* 팝업 */
+/* 팝업 창 전체 디자인 개선 */
 .popup {
   position: fixed;
   top: 0;
   right: 0;
-  width: 40%;
-  min-width: 360px;
+  width: 45%; /* 조금 더 넓게 설정하여 가독성 확보 */
+  min-width: 400px;
   height: 100%;
-  background: #f2f2f2;
-  padding: 40px;
+  background: #eee; /* 메인 배경색인 #eee와 맞춤 */
+  padding: 60px 40px;
   overflow-y: auto;
   z-index: 300;
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
+  /* 부드러운 왼쪽 그림자 추가 */
+  box-shadow: -10px 0 50px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.popup.hidden {
-  display: none;
-}
-
+/* 팝업 내 제목 가독성 */
 .popup h2 {
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
 }
 
-.popup-date {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 24px;
-}
-
+/* 팝업 내 본문 텍스트 */
 .popup-body {
-  font-size: 14px;
-  line-height: 2;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 30px;
 }
 
-#popupClose {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
+/* 문서(iframe)를 감싸는 컨테이너 */
+.embed-container {
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  background: #ffffff; /* 문서는 흰색 종이 느낌을 유지하는 것이 가장 읽기 편함 */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* 문서에 살짝 입체감 부여 */
 }
+
 
 /* ABOUT 페이지 전용 레이아웃 */
 .page-body {
