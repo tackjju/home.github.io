@@ -1,6 +1,6 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLeQeFdWLt6yUX0daihRFirATwDLOS01O8G7U2NMlHVPdfAXEpD1Btp4VzmhxccXghSXawTgo9PUPS/pub?gid=0&single=true&output=csv";
 
-// CSV의 따옴표와 복잡한 링크를 완벽하게 보존하는 파서
+// CSV 파서
 function parseCSV(text) {
     const result = [];
     let row = [];
@@ -39,14 +39,12 @@ async function loadPosts(category) {
 
         for (let i = 1; i < rows.length; i++) {
             const row = rows[i];
-            
-            // 시트의 칸 순서: [0]제목, [1]날짜, [2]카테고리, [3]내용, [4]문서링크(E), [5]영상링크(F)
             const title = row[0] || "";
             const date = row[1] || "";
             const cat = row[2] ? row[2].trim().toLowerCase() : "";
             const content = row[3] || "";
             const docUrl = row[4] ? row[4].trim() : "";
-            const mediaUrl = row[5] ? row[5].trim() : ""; // 여기가 사용자님이 말씀하신 F열!
+            const mediaUrl = row[5] ? row[5].trim() : "";
 
             if (cat === category.toLowerCase()) {
                 const div = document.createElement("div");
@@ -59,27 +57,42 @@ async function loadPosts(category) {
                     <div class="thread-preview">${content.substring(0, 50)}...</div>
                 `;
 
-               div.onclick = () => {
-    let docEmbedHtml = "";
-    
-    // E열에 구글 문서 링크가 있다면 iframe으로 변환
-    if (docUrl.includes("docs.google.com/document")) {
-        // 구글 문서를 웹 게시용 보기 모드로 주소 변경
-        const embedUrl = docUrl.replace(/\/edit.*$/, "/pub?embedded=true");
-        docEmbedHtml = `<iframe src="${https://docs.google.com/document/d/e/2PACX-1vSQ6pGU2DBGSe7IYiTiraniaSXJ1rB6uOAuDEL7K7Q6iaPhurNvDNciV5_Mo9pySIyKAMUJPTnbatlu/pub?embedded=true}" style="width:100%; height:500px; border:1px solid #ddd; margin-top:20px;"></iframe>`;
-    }
+                div.onclick = () => {
+                    let docEmbedHtml = "";
+                    let btnsHtml = "";
+                    
+                    // 1. 구글 문서 임베드 처리 (E열 링크)
+                    if (docUrl.includes("docs.google.com/document")) {
+                        // 일반 주소를 웹 게시용 주소로 변환
+                        let embedUrl = docUrl.split('/edit')[0] + "/pub?embedded=true";
+                        docEmbedHtml = `
+                            <div style="margin-top:20px; border:1px solid #ddd; border-radius:8px; overflow:hidden;">
+                                <iframe src="${embedUrl}" style="width:100%; height:500px; border:none;"></iframe>
+                            </div>`;
+                    } else if (docUrl.startsWith("http")) {
+                        // 구글 문서가 아닌 일반 링크일 경우 버튼으로 표시
+                        btnsHtml += `<a href="${docUrl}" target="_blank" class="nav-btn" style="display:block; margin-top:10px; background:#f0f0f0; text-align:center; padding:12px; text-decoration:none; color:black; border-radius:5px;">📄 관련 문서 열기</a>`;
+                    }
+                    
+                    // 2. 유튜브 버튼 처리 (F열 링크)
+                    if (mediaUrl && (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be"))) {
+                        btnsHtml += `<a href="${mediaUrl}" target="_blank" class="nav-btn" style="display:block; margin-top:10px; background:#FF0000; color:white; text-align:center; padding:12px; text-decoration:none; font-weight:bold; border-radius:5px;">▶ 유튜브 영상 보기</a>`;
+                    }
 
-    popupContent.innerHTML = `
-        <h2>${title}</h2>
-        <p style="color:#999; font-size:13px;">${date}</p>
-        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px;">${content}</div>
-        
-        ${docEmbedHtml}
-        
-        <div style="margin-top:25px; border-top:1px solid #eee; padding-top:15px;">
-            ${btnsHtml} </div>
-    `;
-    popup.classList.remove("hidden");
+                    // 팝업 화면 그리기
+                    popupContent.innerHTML = `
+                        <h2>${title}</h2>
+                        <p style="color:#999; font-size:13px;">${date}</p>
+                        
+                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; line-height:1.6; font-size:14px;">${content}</div>
+                        
+                        ${docEmbedHtml}
+                        
+                        <div style="margin-top:25px; border-top:1px solid #eee; padding-top:15px;">
+                            ${btnsHtml}
+                        </div>
+                    `;
+                    popup.classList.remove("hidden");
                 };
                 listEl.appendChild(div);
             }
