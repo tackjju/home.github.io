@@ -66,9 +66,10 @@ async function loadPosts(category) {
 if (docUrl && docUrl.includes("docs.google.com/document")) {
     let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
     docEmbedHtml = `
-        <div class="embed-container">
-            <iframe src="${embedUrl}" style="width:100%; height:700px; border:none; display:block;"></iframe>
-        </div>
+        // posts.js 내의 docEmbedHtml 생성 부분
+docEmbedHtml = `
+    <div class="embed-container" style="background: #eee;"> <iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe>
+    </div>`;
         <p style="text-align:center; margin-top:10px;">
             <a href="${docUrl}" target="_blank" style="font-size:12px; color:#888; text-decoration:none;">↗ 새 창에서 문서 전체 보기</a>
         </p>`;
