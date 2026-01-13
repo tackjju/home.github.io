@@ -1,5 +1,6 @@
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLeQeFdWLt6yUX0daihRFirATwDLOS01O8G7U2NMlHVPdfAXEpD1Btp4VzmhxccXghSXawTgo9PUPS/pub?gid=0&single=true&output=csv";
 
+// CSV 파싱 함수
 function parseCSV(text) {
     const result = [];
     let row = [];
@@ -24,20 +25,26 @@ function parseCSV(text) {
     return result;
 }
 
+// 포스트 로드 함수
 async function loadPosts(category) {
     const listEl = document.getElementById("thread-list");
     const popup = document.getElementById("popup");
     const popupContent = document.getElementById("popupContent");
+
+    if (!listEl) return;
 
     try {
         const res = await fetch(`${SHEET_URL}&t=${Date.now()}`);
         const text = await res.text();
         const rows = parseCSV(text);
 
+        // [최신순 정렬] 첫 줄(헤더) 제외하고 데이터만 뒤집기
+        const dataRows = rows.slice(1).reverse();
+
         listEl.innerHTML = ""; 
 
-        for (let i = 1; i < rows.length; i++) {
-            const row = rows[i];
+        for (let i = 0; i < dataRows.length; i++) {
+            const row = dataRows[i];
             const title = row[0] || "";
             const date = row[1] || "";
             const cat = row[2] ? row[2].trim().toLowerCase() : "";
@@ -59,18 +66,20 @@ async function loadPosts(category) {
                 div.onclick = () => {
                     let docEmbedHtml = "";
                     let youtubeEmbedHtml = "";
-                    let btnsHtml = "";
                     
-                    // 1. 구글 문서 임베드 (E열)
+                    // 1. 구글 문서 임베드 로직 (테두리 및 중복 스타일 제거)
                     if (docUrl && docUrl.includes("docs.google.com/document")) {
                         let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
                         docEmbedHtml = `
-                            <div style="margin-top:30px; border:0px solid #ddd; border-radius:0px; overflow:hidden; background: #fff;">
-                                <iframe src="${embedUrl}" style="width:100%; height:500px; border:none;"></iframe>
-                            </div>`;
+                            <div class="embed-container">
+                                <iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe>
+                            </div>
+                            <p style="text-align:center; margin-top:15px;">
+                                <a href="${docUrl}" target="_blank" style="font-size:12px; color:#888; text-decoration:none;">↗ 새 창에서 문서 전체 보기</a>
+                            </p>`;
                     }
 
-                    // 2. 유튜브 임베드 (F열)
+                    // 2. 유튜브 임베드 로직
                     if (mediaUrl && (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be"))) {
                         let videoId = "";
                         if (mediaUrl.includes("v=")) {
@@ -87,21 +96,28 @@ async function loadPosts(category) {
                         }
                     }
 
+                    // 팝업 내용 구성
                     popupContent.innerHTML = `
                         <h2>${title}</h2>
                         <p style="color:#999; font-size:13px;">${date}</p>
-                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; font-size:14px;">${content}</div>
+                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; font-size:15px; line-height:1.8;">${content}</div>
                         ${youtubeEmbedHtml}
                         ${docEmbedHtml}
                     `;
                     popup.classList.remove("hidden");
+                    popup.scrollTop = 0; // 팝업 열 때 스크롤 맨 위로
                 };
                 listEl.appendChild(div);
             }
         }
-    } catch (err) { console.error(err); }
+    } catch (err) { 
+        console.error("데이터 로드 에러:", err); 
+    }
 }
 
+// 팝업 닫기 이벤트
 document.addEventListener("click", (e) => {
-    if (e.target.id === "popupClose") document.getElementById("popup").classList.add("hidden");
+    if (e.target.id === "popupClose") {
+        document.getElementById("popup").classList.add("hidden");
+    }
 });
