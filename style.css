@@ -182,3 +182,9 @@ body {
   border: none;    /* 테두리 제거 */
   background: transparent; /* 배경 투명하게 */
 }
+
+/* style.css 맨 아래에 추가 */
+.nav-btn:hover {
+  color: #faff00 !important; /* 마우스 올리면 형광 노랑으로 변경 */
+  text-shadow: 0 0 5px rgba(0,0,0,0.1); /* 밝은색이라 잘 안보일까봐 살짝 그림자 추가 */
+}
