@@ -115,9 +115,19 @@ async function loadPosts(category) {
     }
 }
 
-// 팝업 닫기 이벤트
+
+// 팝업 닫기 이벤트 (X 버튼 클릭 OR 팝업 바깥 영역 클릭 시)
 document.addEventListener("click", (e) => {
+    const popup = document.getElementById("popup");
+    
+    // 1. X 버튼을 눌렀을 때
     if (e.target.id === "popupClose") {
-        document.getElementById("popup").classList.add("hidden");
+        popup.classList.add("hidden");
+    }
+    
+    // 2. 팝업 바깥(빈 화면)을 눌렀을 때 닫기
+    // 클릭된 대상이 popup 자체(검은 배경 역할을 하는 컨테이너)라면 닫습니다.
+    if (e.target === popup) {
+        popup.classList.add("hidden");
     }
 });
