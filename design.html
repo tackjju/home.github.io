@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>DESIGN - 탁주쓰홈</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-nav">
+  <a href="index.html" class="nav-btn">HOME</a>
+  <a href="about.html" class="nav-btn">ABOUT</a>
+  <a href="record.html" class="nav-btn">RECORD</a>
+  <a href="design.html" class="nav-btn" style="color: #000;">DESIGN</a> <a href="archive.html" class="nav-btn">ARCHIVE</a>
+</header>
+
+<main class="list-page">
+  <div class="page-title">DESIGN</div>
+  <div id="thread-list"></div>
+</main>
+
+<div id="popup" class="popup hidden">
+  <button id="popupClose">&times;</button>
+  <div id="popupContent"></div>
+</div>
+
+<script src="posts.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // 스프레드시트 C열(category)에 'design'이라고 적힌 글만 불러옵니다.
+    loadPosts("design");
+  });
+</script>
+</body>
+</html>
