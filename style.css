@@ -123,19 +123,29 @@ body {
 }
 
 /* ───────── 팝업 ───────── */
+/* 팝업 전체 배경 (화면 전체를 덮음) */
 .popup {
   position: fixed;
   top: 0;
-  right: 0;
+  left: 0;   /* 오른쪽 끝이 아니라 왼쪽부터 전체를 덮게 수정 */
+  width: 100%; 
+  height: 100%;
+  background: rgba(0, 0, 0, 0.05); /* 바깥쪽은 아주 살짝 어둡게 (투명도 조절 가능) */
+  z-index: 2000;
+  display: flex;
+  justify-content: flex-end; /* 실제 내용은 오른쪽에 배치 */
+}
+
+/* 팝업 안의 실제 흰색 창 내용물 */
+#popupContent {
   width: 45%; 
   min-width: 360px;
   height: 100%;
-  background: #eee; 
+  background: #eee; /* 홈페이지 배경색과 통일 */
   padding: 60px 40px;
   overflow-y: auto;
-  z-index: 2000;
   box-shadow: -10px 0 50px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  position: relative; /* X 버튼 배치를 위해 */
 }
 
 .popup.hidden {
