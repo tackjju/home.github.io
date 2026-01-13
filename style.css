@@ -188,3 +188,44 @@ body {
   color: #faff00 !important; /* 마우스 올리면 형광 노랑으로 변경 */
   text-shadow: 0 0 5px rgba(0,0,0,0.1); /* 밝은색이라 잘 안보일까봐 살짝 그림자 추가 */
 }
+
+/* ───────── 모바일 반응형 설정 (화면 너비 768px 이하) ───────── */
+@media (max-width: 768px) {
+  /* 1. 상단 네비게이션 간격 조정 */
+  .top-nav {
+    top: 20px;
+    gap: 15px;
+    width: 90%;
+    justify-content: center;
+  }
+  
+  .nav-btn {
+    font-size: 11px; /* 글씨를 조금 더 작게 */
+  }
+
+  /* 2. 메인 리스트 폭 조정 */
+  .list-page, .page-body {
+    margin-top: 100px;
+    padding: 0 15px;
+  }
+
+  /* 3. 팝업창 설정 (가장 중요!) */
+  .popup {
+    justify-content: center; /* 중앙 정렬 */
+  }
+
+  #popupContent {
+    width: 100%; /* 모바일에서는 팝업이 화면을 꽉 채우도록 */
+    min-width: 100%;
+    padding: 40px 20px;
+  }
+
+  /* 4. 유튜브 및 문서 높이 조절 */
+  .embed-container iframe {
+    height: 400px; /* 모바일에서는 너무 길지 않게 */
+  }
+
+  .video-wrap {
+    width: 100%; /* 유튜브 영상 가득 차게 */
+  }
+}
