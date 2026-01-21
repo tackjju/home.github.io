@@ -137,15 +137,19 @@ body {
 }
 
 /* 팝업 안의 실제 흰색 창 내용물 */
+/* style.css 에서 #popupContent를 찾아 아래와 같이 수정 */
 #popupContent {
   width: 45%; 
   min-width: 360px;
   height: 100%;
-  background: #eee; /* 홈페이지 배경색과 통일 */
-  padding: 60px 40px;
+  background: #eee;
+  /* 상단 60px, 좌우 40px, 하단 150px 로 여백을 넉넉히 줌 */
+  padding: 60px 40px 150px 40px; 
   overflow-y: auto;
   box-shadow: -10px 0 50px rgba(0, 0, 0, 0.1);
-  position: relative; /* X 버튼 배치를 위해 */
+  position: relative;
+  /* 스크롤바 디자인을 깔끔하게 (선택사항) */
+  scrollbar-gutter: stable; 
 }
 
 .popup.hidden {
