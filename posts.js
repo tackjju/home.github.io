@@ -97,13 +97,15 @@ async function loadPosts(category) {
                         docEmbedHtml = `<div class="embed-container" style="margin-top:20px;"><iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe></div>`;
                     }
 
-                    popupContent.innerHTML = `
-                        <h2>${title}</h2>
-                        <p style="color:#999; font-size:13px;">${date}</p>
-                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; font-size:15px; line-height:1.8;">${formattedContent}</div>
-                        ${youtubeEmbedHtml}
-                        ${docEmbedHtml}
-                    `;
+                    // posts.js 내의 popupContent.innerHTML 부분 수정
+popupContent.innerHTML = `
+    <h2>${title}</h2>
+    <p style="color:#999; font-size:13px;">${date}</p>
+    <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; font-size:15px; line-height:1.8;">${formattedContent}</div>
+    ${youtubeEmbedHtml}
+    ${docEmbedHtml}
+    <div style="height: 100px; width: 100%;"></div> 
+`;
                     popup.classList.remove("hidden");
                     popup.scrollTop = 0;
                 };
