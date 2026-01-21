@@ -28,14 +28,28 @@ async function loadPosts(category) {
     const listEl = document.getElementById("thread-list");
     const popup = document.getElementById("popup");
     const popupContent = document.getElementById("popupContent");
-    if (!listEl) return;
+    
+    // 요소가 없으면 실행 중단
+    if (!listEl || !popup || !popupContent) {
+        console.error("필수 HTML 요소(thread-list, popup 등)를 찾을 수 없습니다.");
+        return;
+    }
 
     try {
+        // 캐시 방지를 위해 시간값 추가
         const res = await fetch(`${SHEET_URL}&t=${Date.now()}`);
+        if (!res.ok) throw new Error("데이터를 불러오는데 실패했습니다.");
+        
         const text = await res.text();
         const rows = parseCSV(text);
-        const dataRows = rows.slice(1).reverse();
+        
+        // 데이터가 헤더(1줄)밖에 없으면 중단
+        if (rows.length <= 1) {
+            listEl.innerHTML = "<p style='padding:20px;'>등록된 글이 없습니다.</p>";
+            return;
+        }
 
+        const dataRows = rows.slice(1).reverse();
         listEl.innerHTML = ""; 
 
         for (let i = 0; i < dataRows.length; i++) {
@@ -62,13 +76,12 @@ async function loadPosts(category) {
                     let docEmbedHtml = "";
                     let youtubeEmbedHtml = "";
                     
-                    // 1. 본문 내 [img:주소]를 찾아서 <img> 태그로 변환
-                    // 정규표현식을 사용하여 [img:URL] 형식을 모두 이미지 태그로 바꿉니다.
+                    // 이미지 태그 변환
                     let formattedContent = content.replace(/\[img:(.*?)\]/g, (match, url) => {
-                        return `<img src="${url.trim()}" style="width:100%; border-radius:4px; margin: 15px 0; display:block;">`;
+                        return `<img src="${url.trim()}" style="width:100%; border-radius:4px; margin: 15px 0; display:block;" onerror="this.style.display='none'">`;
                     });
 
-                    // 2. 유튜브 처리
+                    // 유튜브 처리
                     if (mediaUrl && (mediaUrl.includes("youtube.com") || mediaUrl.includes("youtu.be"))) {
                         let videoId = "";
                         if (mediaUrl.includes("v=")) videoId = mediaUrl.split("v=")[1].split("&")[0];
@@ -78,10 +91,10 @@ async function loadPosts(category) {
                         }
                     }
 
-                    // 3. 구글 문서 처리
+                    // 구글 문서 처리
                     if (docUrl && docUrl.includes("docs.google.com/document")) {
                         let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
-                        docEmbedHtml = `<div class="embed-container"><iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe></div>`;
+                        docEmbedHtml = `<div class="embed-container" style="margin-top:20px;"><iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe></div>`;
                     }
 
                     popupContent.innerHTML = `
@@ -97,13 +110,23 @@ async function loadPosts(category) {
                 listEl.appendChild(div);
             }
         }
-    } catch (err) { console.error(err); }
+    } catch (err) { 
+        console.error("에러 발생:", err); 
+        listEl.innerHTML = "<p style='padding:20px;'>데이터를 불러오는 중 오류가 발생했습니다.</p>";
+    }
 }
 
+// 팝업 닫기 이벤트
 document.addEventListener("click", (e) => {
     const popup = document.getElementById("popup");
     const popupContent = document.getElementById("popupContent");
     if (!popup) return;
-    if (e.target.id === "popupClose") popup.classList.add("hidden");
-    if (e.target === popup && !popupContent.contains(e.target)) popup.classList.add("hidden");
+    
+    if (e.target.id === "popupClose") {
+        popup.classList.add("hidden");
+    }
+    // 팝업 배경을 클릭했을 때만 닫기
+    if (e.target === popup) {
+        popup.classList.add("hidden");
+    }
 });
