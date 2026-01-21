@@ -83,3 +83,27 @@ async function loadPosts(category) {
                         let embedUrl = docUrl + (docUrl.includes("?") ? "&" : "?") + "embedded=true";
                         docEmbedHtml = `<div class="embed-container"><iframe src="${embedUrl}" style="width:100%; height:800px; border:none; display:block; background: transparent;"></iframe></div>`;
                     }
+
+                    popupContent.innerHTML = `
+                        <h2>${title}</h2>
+                        <p style="color:#999; font-size:13px;">${date}</p>
+                        <div class="popup-body" style="white-space:pre-wrap; margin-top:20px; font-size:15px; line-height:1.8;">${formattedContent}</div>
+                        ${youtubeEmbedHtml}
+                        ${docEmbedHtml}
+                    `;
+                    popup.classList.remove("hidden");
+                    popup.scrollTop = 0;
+                };
+                listEl.appendChild(div);
+            }
+        }
+    } catch (err) { console.error(err); }
+}
+
+document.addEventListener("click", (e) => {
+    const popup = document.getElementById("popup");
+    const popupContent = document.getElementById("popupContent");
+    if (!popup) return;
+    if (e.target.id === "popupClose") popup.classList.add("hidden");
+    if (e.target === popup && !popupContent.contains(e.target)) popup.classList.add("hidden");
+});
