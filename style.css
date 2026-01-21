@@ -16,7 +16,7 @@ body {
   transform: translateX(-50%);
   display: flex;
   gap: 28px;
-  z-index: 1000; /* 네비가 항상 위에 오도록 */
+  z-index: 1000;
 }
 
 .nav-btn {
@@ -25,6 +25,13 @@ body {
   color: #0055ff;
   text-decoration: none; 
   letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+}
+
+/* 마우스 호버 시 노란색 변경 */
+.nav-btn:hover {
+  color: #faff00 !important;
+  text-shadow: 0 0 5px rgba(0,0,0,0.1);
 }
 
 /* ───────── 메인 화면 (index.html 유튜브 중앙 정렬) ───────── */
@@ -32,8 +39,8 @@ body {
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: center;    /* 세로 중앙 */
-  justify-content: center;/* 가로 중앙 */
+  align-items: center;
+  justify-content: center;
 }
 
 .video-wrap {
@@ -70,7 +77,6 @@ body {
   transition: background 0.2s ease;
 }
 
-/* 마우스 호버 시 위에서 아래로 형광 연노랑 그라데이션 */
 .thread:hover {
   background: linear-gradient(
     180deg, 
@@ -84,7 +90,6 @@ body {
   font-weight: 700;
   display: block;
   margin-bottom: 4px;
-  background: none; /* 이전 밑줄 효과 완전 제거 */
 }
 
 .thread-preview {
@@ -106,7 +111,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* transform 제거: 레이아웃 꼬임 방지 */
   padding: 0 20px;
 }
 
@@ -116,40 +120,31 @@ body {
   margin-bottom: 32px;
 }
 
-.page-body p {
-  font-size: 14px;
-  margin: 8px 0;
-  line-height: 1.6;
-}
-
-/* ───────── 팝업 ───────── */
-/* 팝업 전체 배경 (화면 전체를 덮음) */
+/* ───────── 팝업 (반응형 적용) ───────── */
 .popup {
   position: fixed;
   top: 0;
-  left: 0;   /* 오른쪽 끝이 아니라 왼쪽부터 전체를 덮게 수정 */
+  left: 0;
   width: 100%; 
   height: 100%;
-  background: rgba(0, 0, 0, 0.05); /* 바깥쪽은 아주 살짝 어둡게 (투명도 조절 가능) */
+  background: rgba(0, 0, 0, 0.05); /* 배경 투명도 낮춤 */
   z-index: 2000;
   display: flex;
-  justify-content: flex-end; /* 실제 내용은 오른쪽에 배치 */
+  justify-content: flex-end; /* 기본 우측 정렬 */
 }
 
-/* 팝업 안의 실제 흰색 창 내용물 */
-/* style.css 에서 #popupContent를 찾아 아래와 같이 수정 */
 #popupContent {
-  width: 45%; 
-  min-width: 360px;
+  width: 40%;              /* 일반 데스크탑 너비 */
+  max-width: 800px;        /* 최대 너비 제한 */
+  min-width: 450px;        /* 최소 너비 제한 */
   height: 100%;
   background: #eee;
-  /* 상단 60px, 좌우 40px, 하단 150px 로 여백을 넉넉히 줌 */
-  padding: 60px 40px 150px 40px; 
+  padding: 60px 40px 150px 40px; /* 하단 여백 넉넉히 150px */
   overflow-y: auto;
-  box-shadow: -10px 0 50px rgba(0, 0, 0, 0.1);
+  box-shadow: -10px 0 50px rgba(0, 0, 0, 0.05);
   position: relative;
-  /* 스크롤바 디자인을 깔끔하게 (선택사항) */
-  scrollbar-gutter: stable; 
+  scrollbar-gutter: stable;
+  transition: width 0.3s ease; /* 너비 조절 시 부드럽게 애니메이션 */
 }
 
 .popup.hidden {
@@ -168,6 +163,7 @@ body {
   color: #333;
 }
 
+/* 팝업 닫기 X 버튼 */
 #popupClose {
   position: absolute;
   top: 16px;
@@ -176,26 +172,27 @@ body {
   border: none;
   font-size: 24px;
   cursor: pointer;
+  z-index: 2100;
 }
 
 /* 구글 문서 컨테이너 */
 .embed-container {
   margin-top: 20px;
-  border-radius: 0; /* 테두리 둥글기 제거 시 더 자연스러움 */
+  border-radius: 0;
   overflow: hidden;
-  border: none;    /* 테두리 제거 */
-  background: transparent; /* 배경 투명하게 */
+  border: none;
+  background: transparent;
 }
 
-/* style.css 맨 아래에 추가 */
-.nav-btn:hover {
-  color: #faff00 !important; /* 마우스 올리면 형광 노랑으로 변경 */
-  text-shadow: 0 0 5px rgba(0,0,0,0.1); /* 밝은색이라 잘 안보일까봐 살짝 그림자 추가 */
+/* ───────── 반응형 설정 (태블릿 및 모바일) ───────── */
+@media (max-width: 1024px) {
+  #popupContent {
+    width: 60%; /* 태블릿에서는 조금 더 넓게 */
+    min-width: 400px;
+  }
 }
 
-/* ───────── 모바일 반응형 설정 (화면 너비 768px 이하) ───────── */
 @media (max-width: 768px) {
-  /* 1. 상단 네비게이션 간격 조정 */
   .top-nav {
     top: 20px;
     gap: 15px;
@@ -204,32 +201,29 @@ body {
   }
   
   .nav-btn {
-    font-size: 11px; /* 글씨를 조금 더 작게 */
+    font-size: 11px;
   }
 
-  /* 2. 메인 리스트 폭 조정 */
   .list-page, .page-body {
     margin-top: 100px;
     padding: 0 15px;
   }
 
-  /* 3. 팝업창 설정 (가장 중요!) */
   .popup {
-    justify-content: center; /* 중앙 정렬 */
+    justify-content: center; /* 모바일은 전체 화면 중앙 */
   }
 
   #popupContent {
-    width: 100%; /* 모바일에서는 팝업이 화면을 꽉 채우도록 */
+    width: 100%; 
     min-width: 100%;
-    padding: 40px 20px;
+    padding: 50px 20px 100px 20px; /* 하단 여백 모바일용 조정 */
   }
 
-  /* 4. 유튜브 및 문서 높이 조절 */
   .embed-container iframe {
-    height: 400px; /* 모바일에서는 너무 길지 않게 */
+    height: 400px; /* 모바일 전용 높이 */
   }
 
   .video-wrap {
-    width: 100%; /* 유튜브 영상 가득 차게 */
+    width: 100%;
   }
 }
